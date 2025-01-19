@@ -7,16 +7,19 @@ EXPOSE 8081
 # Use a Linux-based .NET SDK image for building the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+RUN mkdir -p /src/dependencies
 WORKDIR /src
 
 # Copy .csproj file and restore dependencies
-COPY OpenShiftSample.csproj /  # Correct path
+# RUN mkdir -p ./dependencies
+# COPY OpenShiftSample.csproj ./dependencies  # Correct path
+COPY . .
 
 # Ensure the destination is a directory and run dotnet restore
 RUN dotnet restore "OpenShiftSample.csproj"
 
 # Copy the rest of the files
-COPY . .  # Copy the remaining source code
+# COPY ./ .  # Copy the remaining source code
 
 # Build the project
 WORKDIR "/src"
